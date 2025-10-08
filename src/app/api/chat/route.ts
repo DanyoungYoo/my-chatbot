@@ -72,8 +72,11 @@ import { CharacterTextSplitter } from 'langchain/text_splitter';
 import { HuggingFaceInferenceEmbeddings } from "@langchain/community/embeddings/hf";
 import { MemoryVectorStore } from "langchain/vectorstores/memory";
 import { HfInference } from "@huggingface/inference";
+// --- 1. VectorStoreRetriever 타입을 새로 가져옵니다. ---
+import type { VectorStoreRetriever } from "langchain/vectorstores/base";
 
-let retriever: any = null;
+// --- 2. retriever의 타입을 any -> VectorStoreRetriever로 변경 ---
+let retriever: VectorStoreRetriever | null = null;
 let prompt: PromptTemplate | null = null;
 let hf: HfInference | null = null;
 
@@ -96,9 +99,7 @@ async function initializeRag() {
     const vectorStore = await MemoryVectorStore.fromDocuments(docs, embeddings);
     retriever = vectorStore.asRetriever();
     
-    // --- 변경된 부분: 프롬프트 템플릿을 한글로 수정 ---
-    const template = `당신은 친절한 안내원입니다. 사용자의 질문에 대해 주어진 문맥(Context)만을 사용하여 한국어로 답변해주세요. 문맥에 답변이 없는 경우, "죄송하지만 해당 정보는 찾을 수 없습니다."라고 답변해주세요.
-
+    const template = `You are a helpful assistant. Answer the user's question based only on the following context.
 Context: {context}
 Question: {question}`;
     prompt = PromptTemplate.fromTemplate(template);
