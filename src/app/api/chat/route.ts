@@ -72,10 +72,11 @@ import { CharacterTextSplitter } from 'langchain/text_splitter';
 import { HuggingFaceInferenceEmbeddings } from "@langchain/community/embeddings/hf";
 import { MemoryVectorStore } from "langchain/vectorstores/memory";
 import { HfInference } from "@huggingface/inference";
-// --- 1. VectorStoreRetriever 타입을 새로 가져옵니다. ---
-import type { VectorStoreRetriever } from "langchain/vectorstores/base";
 
-// --- 2. retriever의 타입을 any -> VectorStoreRetriever로 변경 ---
+// --- 변경된 부분: VectorStoreRetriever의 import 경로 수정 ---
+import type { VectorStoreRetriever } from "@langchain/core/vectorstores";
+
+
 let retriever: VectorStoreRetriever | null = null;
 let prompt: PromptTemplate | null = null;
 let hf: HfInference | null = null;
